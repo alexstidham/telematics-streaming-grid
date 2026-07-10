@@ -51,8 +51,7 @@ Clone this repository, navigate to the project directory, and spin up the enviro
 ```bash
 docker compose up
 ```
-
-(_Note: The Python microservices feature resilient connection retry loops, meaning they will automatically await full database and broker initialization without crashing._)
+_Note: The Python microservices feature resilient connection retry loops, meaning they will automatically await full database and broker initialization without crashing._
 
 ### 2. Launch the Edge Stream Simulator
 In a separate terminal window on your local machine, activate your virtual environment and kick off the telematics asset stream generator: 
@@ -61,5 +60,5 @@ source .venv/bin/activate
 python3 simulator.py
 ```
 ### 3. Verify and Query the API Gateways
-Open your web browser or execute via (curl) to view live outputs passing through the dual-tier storage layers:
-
+Open your web browser or execute via `curl` to view live outputs passing through the dual-tier storage layers:
+* ** Analytical Pred
