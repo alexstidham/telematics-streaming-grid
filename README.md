@@ -10,8 +10,8 @@ The infrastructure decouples ingestion, real-time alerting, and historical cold-
 │
 ▼
 [ Stream Processor (CEP) ]
-╱                  ╲
-(Hot Path) ╱                    ╲ (Cold Path)
+            ╱      ╲
+(Hot Path) ╱         ╲ (Cold Path)
 ▼                      ▼
 [ Redis Cache ]       [ TimescaleDB ]
 (Sub-2ms Updates)     (Time-Series Hypertable)
