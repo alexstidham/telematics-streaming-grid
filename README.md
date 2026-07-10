@@ -5,7 +5,7 @@ A production-grade, fault-tolerant distributed streaming architecture designed t
 ## System Architecture
 
 The infrastructure decouples ingestion, real-time alerting, and historical cold-storage archiving to handle bursty edge signaling smoothly.
-
+```text
 [ Edge Simulator ] ──(High-Velocity Signals)──► [ Apache Kafka ]
 │
 ▼
@@ -18,6 +18,7 @@ The infrastructure decouples ingestion, real-time alerting, and historical cold-
 ▲                      ▲
 │                      │
 └────── [ FastAPI ] ───┘
+```
 
 ### Infrastructure Stack & Design Rationale
 
