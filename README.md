@@ -61,4 +61,8 @@ python3 simulator.py
 ```
 ### 3. Verify and Query the API Gateways
 Open your web browser or execute via `curl` to view live outputs passing through the dual-tier storage layers:
-* ** Analytical Pred
+* **Analytical Predictive Maintenance Report (TimescaleDB Tier):** `http://localhost:8000/api/fleet/predictive-report`
+  _Returns aggregated moving averages for engine temperatures and anomalous structural vibrations._
+* **Live Operational Snapshot (Redis Tier):** `http://localhost:8000/api/fleet/live/TRUCK-011`
+  _Returns sub-second cache lookups for specific truck coordinates, RPMs, and immediate metrics._
+  
