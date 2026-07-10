@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  redis:
+    image: redis:7.2-alpine
+    ports:
+      - "6379:6379"
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=telematics_db
+      - POSTGRES_USER=telematics_admin
+      - POSTGRES_PASSWORD=telematics_secure_pass
+
+  api-gateway:
+    image: python:3.11-buster  # <--- Change to buster
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - DB_HOST=timescaledb
+      - REDIS_HOST=redis
+      - PYTHONUNBUFFERED=1
+    command: sh -c "pip install fastapi uvicorn redis psycopg2-binary && uvicorn api:app --host 0.0.0.0 --port 8000 --reload"
+    depends_on:
+      - timescaledb
+      - redis
+
+  stream-processor:
+    image: python:3.11-buster  # <--- Change to buster
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - DB_HOST=timescaledb
+      - REDIS_HOST=redis
+      - KAFKA_BROKER=kafka:29092
+      - PYTHONUNBUFFERED=1
+    command: sh -c "pip install kafka-python-ng redis psycopg2-binary && python processor.py"
+    depends_on:
+      - kafka
+      - timescaledb
+      - redis
