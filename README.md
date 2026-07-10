@@ -50,5 +50,6 @@ The entire grid is fully containerized, network-isolated, and ready to spin up o
 Clone this repository, navigate to the project directory, and spin up the environment mesh:
 ```bash
 docker compose up
+```
 
 Note: The Python microservices feature resilient connection retry loops, meaning they will automatically await full database and broker initialization without crashing.
