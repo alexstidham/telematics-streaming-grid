@@ -6,18 +6,18 @@ A production-grade, fault-tolerant distributed streaming architecture designed t
 
 The infrastructure decouples ingestion, real-time alerting, and historical cold-storage archiving to handle bursty edge signaling smoothly.
 ```text
-[ Edge Simulator ] ──(High-Velocity Signals)──► [ Apache Kafka ]
-│
-▼
-[ Stream Processor (CEP) ]
-            ╱      ╲
-(Hot Path) ╱         ╲ (Cold Path)
-▼                      ▼
-[ Redis Cache ]       [ TimescaleDB ]
-(Sub-2ms Updates)     (Time-Series Hypertable)
-▲                      ▲
-│                      │
-└────── [ FastAPI ] ───┘
+[ Edge Simulator ] ───(High-Velocity Signals)───► [ Apache Kafka ]
+                                                         │
+                                                         ▼
+                                             [ Stream Processor (CEP) ]
+                                                ╱                  ╲
+                                    (Hot Path) ╱                    ╲ (Cold Path)
+                                              ▼                      ▼
+                                        [ Redis Cache ]       [ TimescaleDB ]
+                                       (Sub-2ms Updates)     (Time-Series Hypertable)
+                                              ▲                      ▲
+                                              │                      │
+                                              └────── [ FastAPI ] ───┘
 ```
 
 ### Infrastructure Stack & Design Rationale
